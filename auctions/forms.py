@@ -10,5 +10,5 @@ class CreateListingForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Description...'}),
             'starting_bid': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Starting Bid ($)'}),
             'image': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Image URL (Optional)'}),
-            'category': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
         }

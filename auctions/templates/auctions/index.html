@@ -2,29 +2,33 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-    
-    {% for auction in auctions %}
+    <div class="container text-center">
+        {% for auction in listings_data %}
+        <div class="row justify-content-md-center">
 
     <div class="card mb-3 custom-card" style="max-width: 540px;">
       <div class="row g-0">
 
         <div class="col-md-4">
-          <img src="{{auction.image}}" class="img-fluid rounded-start" alt="{{ auction.title }}" style="height:100%">
+          <img src="{{auction.auction.image}}" class="img-fluid rounded-start" alt="{{ auction.auction.title }}" style="height:100%">
         </div>
 
         <div class="col-md-8">
           <div class="card-body">
-            <a href="https://Google.com" class="stretched-link">
-                <h5 class="card-title">{{ auction.title }}</h5>
+            <a href="{%url 'listing' auction.auction.id %}" class="stretched-link">
+                <h5 class="card-title">{{ auction.auction.title }}</h5>
             </a>
-            <p class="card-text">{{ auction.description }}</p>
-            <p class="card-text"><small class="text-body-secondary">{{ auction.create_at }}</small></p>
+            <p class="card-text">{{ auction.auction.description }}</p>
+            <p class="card-text"><b>Price:</b> {{ auction.current_price }}</p>
+            <p class="card-text"><small class="text-body-secondary">{{ auction.auction.create_at }}</small></p>
           </div>
         </div>
         
       </div>
     </div>
-
+</div>
+    
     {% endfor %}
+</div>
 
 {% endblock %}
