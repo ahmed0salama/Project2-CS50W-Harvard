@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .forms import CreateListingForm
-from .models import User, Auction, Bids, Comments
+from .models import User, Auction, Bids, Comments, Category
 
 
 def isCurrentUserBid(request, listing_id):
@@ -186,3 +186,44 @@ def add_comment(request, listing_id):
         if message:
             Comments.objects.create(commenter=request.user, auction=listing, comment=message)
     return redirect("listing", listing_id=listing_id)
+
+@login_required
+def watchlist_page(request):
+    watchlist_items = request.user.watchlist.all()
+    
+    listings_data = []
+    for listing in watchlist_items:
+        highest_bid = listing.bids.order_by('-amount').first()
+        current_price = highest_bid.amount if highest_bid else listing.starting_bid
+        listings_data.append({
+            'listing': listing,
+            'current_price': current_price
+        })
+
+    return render(request, "auctions/watchlist.html", {
+        "listings_data": listings_data
+    })
+
+def categories_list(request):
+    categories = Category.objects.all()
+    return render(request, "auctions/categories.html", {
+        "categories": categories
+    })
+
+def category_listings(request, category_id):
+    category = Category.objects.get(pk=category_id)
+    active_listings = Auction.objects.filter(category=category, active=True)
+    
+    listings_data = []
+    for listing in active_listings:
+        highest_bid = listing.bids.order_by('-amount').first()
+        current_price = highest_bid.amount if highest_bid else listing.starting_bid
+        listings_data.append({
+            'listing': listing,
+            'current_price': current_price
+        })
+
+    return render(request, "auctions/category_listings.html", {
+        "category": category,
+        "listings_data": listings_data
+    })

@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Categories</h2>
+
+    <div class="list-group mt-4" style="max-width: 500px;">
+        {% for category in categories %}
+            <a href="{% url 'category_listings' category.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                {{ category.category_name }}
+                <span class="badge badge-primary badge-pill">→</span>
+            </a>
+        {% empty %}
+            <p class="text-muted">No categories created yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
