@@ -64,7 +64,6 @@ def register(request):
         username = request.POST["username"]
         email = request.POST["email"]
 
-        # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
@@ -72,7 +71,6 @@ def register(request):
                 "message": "Passwords must match."
             })
 
-        # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
@@ -227,3 +225,17 @@ def category_listings(request, category_id):
         "category": category,
         "listings_data": listings_data
     })
+
+def create_catogry_view(request):
+    if request.method == 'POST' :
+        if request.user.is_authenticated:
+            Category.objects.create(category_name=request.POST.get('category_name'))
+        return redirect('categories')
+    return render(request, "auctions/create_cateogry.html")
+
+@login_required
+def create_category(request):
+    print(request)
+    if request.method=="POST":
+        Category.objects.create(category_name=request.POST.get('category_name'))
+        return redirect('categories')

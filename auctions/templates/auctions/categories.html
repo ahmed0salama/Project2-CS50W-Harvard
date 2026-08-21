@@ -12,5 +12,9 @@
         {% empty %}
             <p class="text-muted">No categories created yet.</p>
         {% endfor %}
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'create_category' %}">Add category</a>
+        {% endif %}
+        {% if message %} {{message}} {% endif %}
     </div>
 {% endblock %}

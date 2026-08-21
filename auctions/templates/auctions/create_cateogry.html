@@ -1,0 +1,12 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<form action="{% url 'create_category' %}" method="POST">
+    {% csrf_token %}
+    <input class="form-control" type="text" placeholder="Category name" aria-label="default input example" name="category_name">
+    <br>
+    <input type="submit" class="btn btn-primary">
+</form>
+
+{% endblock %}
